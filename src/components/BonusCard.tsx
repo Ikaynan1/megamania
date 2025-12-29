@@ -11,12 +11,8 @@ interface BonusCardProps {
 const BonusCard = ({ platformName, bonusAmount, link, index }: BonusCardProps) => {
   return (
     <div 
-      className="card-casino p-6 group"
-      style={{ 
-        animationDelay: `${index * 100}ms`,
-        animation: 'fade-in 0.5s ease-out forwards',
-        opacity: 0 
-      }}
+      className="card-casino p-6 group animate-fade-in"
+      style={{ animationDelay: `${index * 50}ms` }}
     >
       {/* Shimmer effect overlay */}
       <div className="absolute inset-0 shimmer pointer-events-none rounded-xl" />
