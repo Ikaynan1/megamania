@@ -83,14 +83,14 @@ const Header = () => (
 
       <Banner />
 
-      <div className="flex items-center justify-center gap-2 mt-4">
+      <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50">
           <ShieldCheck className="w-3.5 h-3.5 text-gold" />
-          <span className="text-xs font-medium">100% Regulamentadas</span>
+          <span className="text-[10px] sm:text-xs font-medium whitespace-nowrap">100% Regulamentadas</span>
         </div>
         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50">
           <Zap className="w-3.5 h-3.5 text-gold" />
-          <span className="text-xs font-medium">Novidades todo dia</span>
+          <span className="text-[10px] sm:text-xs font-medium whitespace-nowrap">Novidades todo dia</span>
         </div>
       </div>
     </div>
