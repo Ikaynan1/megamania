@@ -29,7 +29,7 @@ const Banner = () => {
 
   if (!banners.length) {
     return (
-      <div className="aspect-[16/7] sm:aspect-[16/5] w-full rounded-2xl border border-border bg-card flex flex-col items-start justify-center text-left px-6 sm:px-10">
+      <div className="aspect-[16/5] w-full rounded-2xl border border-border bg-card flex flex-col items-start justify-center text-left px-6 sm:px-10">
         <p className="text-[10px] sm:text-xs uppercase tracking-[0.22em] text-gold mb-3">Mega Mania · catálogo</p>
         <h2 className="font-sans text-xl sm:text-3xl font-semibold tracking-tight text-foreground max-w-xl">Conheça plataformas de entretenimento</h2>
         <p className="text-xs sm:text-sm text-muted-foreground mt-2 max-w-xl">Explore as opções listadas e acesse cada plataforma para conferir os detalhes.</p>
@@ -38,15 +38,15 @@ const Banner = () => {
   }
 
   return (
-    <div className="relative aspect-[16/7] sm:aspect-[16/5] w-full overflow-hidden rounded-2xl border border-border bg-card">
+    <div className="relative aspect-[16/5] w-full overflow-hidden rounded-2xl border border-border bg-card">
       {banners.map((b, idx) => {
-        const img = <img src={b.src} alt="Banner" className="w-full h-full object-cover" />;
+        const img = <img src={b.src} alt="Banner" className="block w-full h-full object-contain" />;
         return (
           <div
             key={b.id}
             className={cn("absolute inset-0 transition-opacity duration-700", idx === i ? "opacity-100" : "opacity-0 pointer-events-none")}
           >
-            {b.link ? <a href={b.link} target="_blank" rel="noopener noreferrer">{img}</a> : img}
+            {b.link ? <a className="block w-full h-full" href={b.link} target="_blank" rel="noopener noreferrer">{img}</a> : img}
           </div>
         );
       })}
