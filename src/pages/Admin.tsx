@@ -41,6 +41,77 @@ const Login = () => {
   );
 };
 
+const BannerAdmin = () => {
+  const qc = useQueryClient();
+  const [file, setFile] = useState<File | null>(null);
+  const [link, setLink] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const { data: banners = [] } = useQuery({
+    queryKey: ["banners"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("banners").select("*").order("created_at", { ascending: false });
+      if (error) throw error;
+      if (!data.length) return [];
+      const { data: signed } = await supabase.storage.from("banners").createSignedUrls(data.map((b) => b.image_url), 86400);
+      return data.map((b, i) => ({ ...b, src: signed?.[i]?.signedUrl ?? "" }));
+    },
+  });
+
+  const upload = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!file) return;
+    setBusy(true);
+    const path = `${Date.now()}-${file.name.replace(/[^\w.]/g, "")}`;
+    const up = await supabase.storage.from("banners").upload(path, file);
+    if (up.error) {
+      setBusy(false);
+      return toast.error(up.error.message);
+    }
+    let url = link.trim();
+    if (url && !/^https?:\/\//i.test(url)) url = "https://" + url;
+    const { error } = await supabase.from("banners").insert({ image_url: path, link: url || null });
+    setBusy(false);
+    if (error) return toast.error(error.message);
+    toast.success("Banner publicado!");
+    setFile(null);
+    setLink("");
+    (e.target as HTMLFormElement).reset();
+    qc.invalidateQueries({ queryKey: ["banners"] });
+  };
+
+  const remove = async (id: string, path: string) => {
+    if (!confirm("Excluir este banner?")) return;
+    await supabase.storage.from("banners").remove([path]);
+    const { error } = await supabase.from("banners").delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    qc.invalidateQueries({ queryKey: ["banners"] });
+  };
+
+  return (
+    <div className="card-casino p-4 space-y-3">
+      <h2 className="font-display text-lg font-bold text-gold">Banners do topo</h2>
+      <p className="text-xs text-muted-foreground">Tamanho ideal: 1600 x 500 (formato largo).</p>
+      <form onSubmit={upload} className="space-y-3">
+        <Input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} required className="h-12 pt-3" />
+        <Input placeholder="Link ao clicar no banner (opcional)" value={link} onChange={(e) => setLink(e.target.value)} className="h-12" />
+        <Button variant="casino" className="w-full h-12 font-display" disabled={busy || !file}>
+          {busy ? "ENVIANDO..." : "PUBLICAR BANNER"}
+        </Button>
+      </form>
+      {banners.map((b) => (
+        <div key={b.id} className="flex items-center gap-3">
+          <img src={b.src} alt="" className="h-14 aspect-[16/5] object-cover rounded-md border border-border" />
+          <span className="flex-1 text-xs text-muted-foreground truncate">{b.link || "Sem link"}</span>
+          <Button variant="ghost" size="icon" onClick={() => remove(b.id, b.image_url)} aria-label="Excluir banner">
+            <Trash2 className="w-4 h-4 text-destructive" />
+          </Button>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const Admin = () => {
   const qc = useQueryClient();
   const [session, setSession] = useState<Session | null>(null);
@@ -144,6 +215,8 @@ const Admin = () => {
               PUBLICAR
             </Button>
           </form>
+
+          <BannerAdmin />
 
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">{platforms.length} plataformas no site</p>

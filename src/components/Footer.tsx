@@ -26,7 +26,7 @@ const Footer = () => {
           
           {/* Copyright */}
           <p className="text-[10px] sm:text-xs text-muted-foreground/60 mt-6 sm:mt-8">
-            © {new Date().getFullYear()} MegaBônus
+            © {new Date().getFullYear()} Mega Mania
           </p>
         </div>
       </div>
