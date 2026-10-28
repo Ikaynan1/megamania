@@ -1,5 +1,5 @@
 import { ArrowUpRight, Flame, Trophy, Zap } from "lucide-react";
-import { CATEGORIES, CategoryId } from "@/lib/categories";
+import type { CategoryId } from "@/lib/categories";
 import { Button } from "./ui/button";
 
 interface BonusCardProps {
