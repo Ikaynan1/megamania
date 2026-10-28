@@ -22,8 +22,8 @@ const categoryLabels = {
 };
 
 const BonusCard = ({ platformName, link, index, category }: BonusCardProps) => {
-  const CategoryIcon = categoryIcons[category];
-  const categoryLabel = categoryLabels[category];
+  const CategoryIcon = categoryIcons[category] ?? Zap;
+  const categoryLabel = categoryLabels[category] ?? "";
   const initials = platformName.replace(/[^a-z0-9]/gi, "").slice(0, 2).toUpperCase();
 
   return (
