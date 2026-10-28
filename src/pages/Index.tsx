@@ -30,15 +30,15 @@ const Index = () => {
 
       <main className="px-4 py-6 sm:container sm:py-12">
         <div className="sticky top-0 z-20 -mx-4 px-4 py-3 mb-4 bg-background/90 backdrop-blur sm:mx-0 sm:px-0">
-          <div className="grid grid-cols-3 gap-2 p-1 rounded-xl bg-card border border-gold/20 max-w-xl mx-auto">
+          <div className="grid grid-cols-3 gap-1 p-1 rounded-lg bg-card border border-border max-w-xl mx-auto">
             {CATEGORIES.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setTab(c.id)}
                 className={cn(
-                  "h-11 rounded-lg text-xs sm:text-sm font-display font-bold tracking-wide transition-all touch-manipulation",
+                  "h-11 rounded-lg text-xs sm:text-sm font-sans font-medium tracking-wide transition-all touch-manipulation",
                   tab === c.id
-                    ? "bg-gradient-to-r from-gold to-gold-light text-primary-foreground shadow-lg"
+                    ? "bg-muted text-gold shadow-sm"
                     : "text-muted-foreground active:bg-muted"
                 )}
               >
@@ -49,12 +49,23 @@ const Index = () => {
           </div>
         </div>
 
+        <div className="max-w-6xl mx-auto flex items-end justify-between gap-4 mb-5 sm:mb-6">
+          <div>
+            <p className="text-[10px] sm:text-xs uppercase tracking-[0.18em] text-muted-foreground mb-1">Explore o catálogo</p>
+            <h2 className="font-sans text-lg sm:text-xl font-semibold tracking-tight text-foreground">{CATEGORIES.find((c) => c.id === tab)?.label}</h2>
+          </div>
+          <span className="text-xs text-muted-foreground whitespace-nowrap">{isLoading ? "Carregando" : `${list.length} ${list.length === 1 ? "plataforma" : "plataformas"}`}</span>
+        </div>
+
         {isLoading ? (
-          <p className="text-center text-muted-foreground py-12">Carregando...</p>
+          <p className="text-center text-muted-foreground py-12">Carregando plataformas...</p>
         ) : list.length === 0 ? (
-          <p className="text-center text-muted-foreground py-12">Nenhuma plataforma nesta aba ainda.</p>
+          <div className="max-w-6xl mx-auto rounded-xl border border-border bg-card/60 px-5 py-12 text-center">
+            <p className="font-medium text-foreground">Nenhuma plataforma nesta categoria</p>
+            <p className="text-sm text-muted-foreground mt-2">Volte em breve para conferir novas opções.</p>
+          </div>
         ) : (
-          <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-6">
+          <div className="max-w-6xl mx-auto flex flex-col gap-3 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4">
             {list.map((p, i) => (
               <BonusCard key={p.id} platformName={p.name} link={p.link} index={i} />
             ))}
