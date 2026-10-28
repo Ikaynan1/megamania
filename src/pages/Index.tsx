@@ -66,7 +66,7 @@ const Index = () => {
         ) : (
           <div className="max-w-6xl mx-auto flex flex-col gap-3 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4">
             {list.map((p, i) => (
-              <BonusCard key={p.id} platformName={p.name} link={p.link} index={i} />
+              <BonusCard key={p.id} platformName={p.name} link={p.link} index={i} category={tab} />
             ))}
           </div>
         )}
