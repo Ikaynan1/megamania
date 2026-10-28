@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -115,7 +115,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 }
 
@@ -273,4 +273,68 @@ video {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+
+/* Refined visual system */
+:root {
+  --background: 222 24% 7%;
+  --foreground: 210 20% 96%;
+  --card: 222 22% 10%;
+  --card-foreground: 210 20% 96%;
+  --muted: 220 16% 15%;
+  --muted-foreground: 218 12% 66%;
+  --border: 220 16% 19%;
+  --input: 220 16% 19%;
+  --gold: 42 62% 58%;
+  --gold-light: 42 66% 68%;
+  --gold-dark: 42 60% 42%;
+  --primary: 42 62% 58%;
+  --primary-foreground: 222 24% 7%;
+  --accent: 42 62% 58%;
+  --accent-foreground: 222 24% 7%;
+  --ring: 42 62% 58%;
+}
+
+.font-display,
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif !important;
+}
+
+.text-gradient-gold {
+  background-image: linear-gradient(135deg, hsl(42 68% 70%), hsl(38 60% 54%));
+}
+
+.bg-casino-gradient {
+  background: linear-gradient(180deg, hsl(222 25% 10%), hsl(222 24% 7%));
+}
+
+.card-casino {
+  border-color: hsl(220 16% 19%);
+  border-radius: 0.85rem;
+  background: hsl(222 22% 10%);
+  box-shadow: 0 8px 24px hsl(222 35% 2% / 0.18);
+}
+
+.card-casino::before {
+  background: linear-gradient(135deg, hsl(42 62% 58% / 0.045), transparent 60%);
+}
+
+.btn-casino {
+  background: hsl(42 62% 58%);
+  color: hsl(222 24% 7%);
+  border-radius: 0.55rem;
+  box-shadow: none;
+}
+
+.btn-casino:hover {
+  background: hsl(42 66% 66%);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px hsl(42 62% 58% / 0.16);
+}
+
+.badge-regulated {
+  background: hsl(220 16% 15%);
+  color: hsl(218 12% 76%);
+  border-color: hsl(220 16% 22%);
 }
