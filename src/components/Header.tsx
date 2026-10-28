@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Crown, ShieldCheck, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -30,16 +29,16 @@ const Banner = () => {
 
   if (!banners.length) {
     return (
-      <div className="aspect-[16/7] sm:aspect-[16/5] w-full rounded-2xl border-2 border-dashed border-gold/30 bg-card/60 flex flex-col items-center justify-center gap-2 text-center px-4">
-        <Crown className="w-8 h-8 text-gold" />
-        <p className="font-display text-sm sm:text-base text-gold">Espaço para banner</p>
-        <p className="text-xs text-muted-foreground">Adicione pelo painel admin</p>
+      <div className="aspect-[16/7] sm:aspect-[16/5] w-full rounded-2xl border border-border bg-card flex flex-col items-start justify-center text-left px-6 sm:px-10">
+        <p className="text-[10px] sm:text-xs uppercase tracking-[0.22em] text-gold mb-3">Mega Mania · catálogo</p>
+        <h2 className="font-sans text-xl sm:text-3xl font-semibold tracking-tight text-foreground max-w-xl">Conheça plataformas de entretenimento</h2>
+        <p className="text-xs sm:text-sm text-muted-foreground mt-2 max-w-xl">Explore as opções listadas e acesse cada plataforma para conferir os detalhes.</p>
       </div>
     );
   }
 
   return (
-    <div className="relative aspect-[16/7] sm:aspect-[16/5] w-full overflow-hidden rounded-2xl border border-gold/30 glow-gold">
+    <div className="relative aspect-[16/7] sm:aspect-[16/5] w-full overflow-hidden rounded-2xl border border-border bg-card">
       {banners.map((b, idx) => {
         const img = <img src={b.src} alt="Banner" className="w-full h-full object-cover" />;
         return (
@@ -71,28 +70,16 @@ const Header = () => (
   <header className="relative overflow-hidden">
     <div className="absolute inset-0 bg-casino-gradient" />
     <div className="relative z-10 px-4 sm:container pt-4 sm:pt-8 pb-2">
-      <div className="flex items-center justify-center gap-2 mb-4">
-        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center glow-gold">
-          <Crown className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground" />
-        </div>
-        <h1 className="font-display text-2xl sm:text-4xl font-black tracking-wider">
-          <span className="text-gradient-gold">MEGA</span>
-          <span className="text-foreground">MANIA</span>
+      <div className="flex flex-col items-center mb-5 sm:mb-7">
+        <p className="text-[10px] sm:text-xs uppercase tracking-[0.24em] text-muted-foreground mb-1">Catálogo independente</p>
+        <h1 className="font-sans text-2xl sm:text-3xl font-semibold tracking-[0.12em] text-foreground">
+          <span className="text-gold">MEGA</span> MANIA
         </h1>
       </div>
 
       <Banner />
 
-      <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50">
-          <ShieldCheck className="w-3.5 h-3.5 text-gold" />
-          <span className="text-[10px] sm:text-xs font-medium whitespace-nowrap">100% Regulamentadas</span>
-        </div>
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50">
-          <Zap className="w-3.5 h-3.5 text-gold" />
-          <span className="text-[10px] sm:text-xs font-medium whitespace-nowrap">Novidades todo dia</span>
-        </div>
-      </div>
+      <p className="text-center text-[10px] sm:text-xs text-muted-foreground mt-4 tracking-wide">Links para plataformas externas · Confira os termos antes de acessar</p>
     </div>
   </header>
 );
