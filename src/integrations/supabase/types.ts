@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      banners: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string
+          link: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url: string
+          link?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string
+          link?: string | null
+        }
+        Relationships: []
+      }
       platforms: {
         Row: {
           category: string

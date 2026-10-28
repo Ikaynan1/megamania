@@ -140,8 +140,13 @@
 
   .card-casino::before {
     content: '';
-    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300 pointer-events-none;
     background: linear-gradient(135deg, hsl(45 100% 50% / 0.1), transparent);
+  }
+
+  .card-casino > :not(.absolute) {
+    position: relative;
+    z-index: 1;
   }
 
   .card-casino:hover::before {

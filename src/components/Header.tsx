@@ -1,49 +1,100 @@
-import { Coins, Crown, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Crown, ShieldCheck, Zap } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { cn } from "@/lib/utils";
 
-const Header = () => {
-  return (
-    <header className="relative py-8 sm:py-16 md:py-24 overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-casino-gradient" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(45_100%_50%_/_0.05)_0%,_transparent_70%)]" />
-      
-      <div className="px-4 sm:container relative z-10">
-        <div className="text-center max-w-3xl mx-auto">
-          {/* Logo/Icon */}
-          <div className="inline-flex items-center justify-center w-14 h-14 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl bg-gradient-to-br from-gold to-gold-dark mb-4 sm:mb-6 glow-gold">
-            <Crown className="w-7 h-7 sm:w-10 sm:h-10 text-primary-foreground" />
-          </div>
-          
-          {/* Title */}
-          <h1 className="font-display text-3xl sm:text-4xl md:text-6xl font-black tracking-wider mb-2 sm:mb-4">
-            <span className="text-gradient-gold">MEGA</span>
-            <span className="text-foreground">BÔNUS</span>
-          </h1>
-          
-          {/* Subtitle */}
-          <p className="text-sm sm:text-lg md:text-xl text-muted-foreground mb-4 sm:mb-6 leading-relaxed px-2">
-            As melhores plataformas de slots com bônus exclusivos.
-            <span className="text-gold/80 block sm:inline"> 100% regulamentadas.</span>
-          </p>
-          
-          {/* Stats/Trust indicators */}
-          <div className="flex items-center justify-center gap-2 sm:gap-6">
-            <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-muted/50 border border-border/50">
-              <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-gold" />
-              <span className="text-xs sm:text-sm font-medium text-foreground">+14 Plataformas</span>
-            </div>
-            <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-muted/50 border border-border/50">
-              <Coins className="w-3 h-3 sm:w-4 sm:h-4 text-gold" />
-              <span className="text-xs sm:text-sm font-medium text-foreground">Bônus Exclusivos</span>
-            </div>
-          </div>
-        </div>
+const useBanners = () =>
+  useQuery({
+    queryKey: ["banners"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("banners").select("*").order("created_at", { ascending: false });
+      if (error) throw error;
+      if (!data.length) return [];
+      const { data: signed } = await supabase.storage
+        .from("banners")
+        .createSignedUrls(data.map((b) => b.image_url), 60 * 60 * 24);
+      return data.map((b, i) => ({ ...b, src: signed?.[i]?.signedUrl ?? "" }));
+    },
+  });
+
+const Banner = () => {
+  const { data: banners = [] } = useBanners();
+  const [i, setI] = useState(0);
+
+  useEffect(() => {
+    if (banners.length < 2) return;
+    const t = setInterval(() => setI((v) => (v + 1) % banners.length), 4500);
+    return () => clearInterval(t);
+  }, [banners.length]);
+
+  if (!banners.length) {
+    return (
+      <div className="aspect-[16/7] sm:aspect-[16/5] w-full rounded-2xl border-2 border-dashed border-gold/30 bg-card/60 flex flex-col items-center justify-center gap-2 text-center px-4">
+        <Crown className="w-8 h-8 text-gold" />
+        <p className="font-display text-sm sm:text-base text-gold">Espaço para banner</p>
+        <p className="text-xs text-muted-foreground">Adicione pelo painel admin</p>
       </div>
-      
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 sm:h-32 bg-gradient-to-t from-background to-transparent" />
-    </header>
+    );
+  }
+
+  return (
+    <div className="relative aspect-[16/7] sm:aspect-[16/5] w-full overflow-hidden rounded-2xl border border-gold/30 glow-gold">
+      {banners.map((b, idx) => {
+        const img = <img src={b.src} alt="Banner" className="w-full h-full object-cover" />;
+        return (
+          <div
+            key={b.id}
+            className={cn("absolute inset-0 transition-opacity duration-700", idx === i ? "opacity-100" : "opacity-0 pointer-events-none")}
+          >
+            {b.link ? <a href={b.link} target="_blank" rel="noopener noreferrer">{img}</a> : img}
+          </div>
+        );
+      })}
+      {banners.length > 1 && (
+        <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
+          {banners.map((b, idx) => (
+            <button
+              key={b.id}
+              onClick={() => setI(idx)}
+              aria-label={`Banner ${idx + 1}`}
+              className={cn("h-1.5 rounded-full transition-all", idx === i ? "w-6 bg-gold" : "w-1.5 bg-foreground/50")}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
+
+const Header = () => (
+  <header className="relative overflow-hidden">
+    <div className="absolute inset-0 bg-casino-gradient" />
+    <div className="relative z-10 px-4 sm:container pt-4 sm:pt-8 pb-2">
+      <div className="flex items-center justify-center gap-2 mb-4">
+        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center glow-gold">
+          <Crown className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground" />
+        </div>
+        <h1 className="font-display text-2xl sm:text-4xl font-black tracking-wider">
+          <span className="text-gradient-gold">MEGA</span>
+          <span className="text-foreground">MANIA</span>
+        </h1>
+      </div>
+
+      <Banner />
+
+      <div className="flex items-center justify-center gap-2 mt-4">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50">
+          <ShieldCheck className="w-3.5 h-3.5 text-gold" />
+          <span className="text-xs font-medium">100% Regulamentadas</span>
+        </div>
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50">
+          <Zap className="w-3.5 h-3.5 text-gold" />
+          <span className="text-xs font-medium">Novidades todo dia</span>
+        </div>
+      </div>
+    </div>
+  </header>
+);
 
 export default Header;
