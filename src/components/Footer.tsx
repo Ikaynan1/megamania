@@ -1,4 +1,4 @@
-import { AlertTriangle, Shield } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -7,23 +7,15 @@ const Footer = () => {
         <div className="max-w-3xl mx-auto text-center">
           {/* Warning */}
           <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4">
-            <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />
-            <span className="text-xs sm:text-sm font-semibold text-gold">JOGO RESPONSÁVEL</span>
+            <AlertTriangle className="w-4 h-4 text-gold" />
+            <span className="text-xs sm:text-sm font-semibold tracking-wide text-foreground">JOGO RESPONSÁVEL · 18+</span>
           </div>
           
           <p className="text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 leading-relaxed">
-            Jogue com responsabilidade. Aposte apenas o que você pode perder. 
-            Proibido para menores de 18 anos.
+            Este site reúne links para plataformas externas. Antes de se cadastrar, confira os termos e as informações de autorização para operar no Brasil diretamente com cada plataforma. Jogue com responsabilidade e aposte apenas o que pode perder.
           </p>
           
-          {/* Regulation badge */}
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-muted/30 border border-border/30">
-            <Shield className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
-            <span className="text-[10px] sm:text-xs text-muted-foreground">
-              Plataformas regulamentadas
-            </span>
-          </div>
-          
+
           {/* Copyright */}
           <p className="text-[10px] sm:text-xs text-muted-foreground/60 mt-6 sm:mt-8">
             © {new Date().getFullYear()} Mega Mania
