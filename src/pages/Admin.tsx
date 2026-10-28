@@ -121,6 +121,7 @@ const Admin = () => {
   const [link, setLink] = useState("");
   const [category, setCategory] = useState<CategoryId>("lancamentos");
   const [busy, setBusy] = useState(false);
+  const [updatingPlatformId, setUpdatingPlatformId] = useState<string | null>(null);
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
@@ -173,6 +174,28 @@ const Admin = () => {
     qc.invalidateQueries({ queryKey: ["platforms"] });
   };
 
+  const updatePlatformCategory = async (id: string, nextCategory: CategoryId) => {
+    setUpdatingPlatformId(id);
+    try {
+      const { error } = await supabase
+        .from("platforms")
+        .update({ category: nextCategory })
+        .eq("id", id);
+
+      if (error) {
+        toast.error("Erro ao mover plataforma: " + error.message);
+        return;
+      }
+
+      toast.success("Categoria da plataforma atualizada.");
+      await qc.invalidateQueries({ queryKey: ["platforms"] });
+    } catch {
+      toast.error("Não foi possível atualizar a categoria. Tente novamente.");
+    } finally {
+      setUpdatingPlatformId(null);
+    }
+  };
+
   if (!ready) return null;
 
   return (
@@ -221,16 +244,29 @@ const Admin = () => {
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">{platforms.length} plataformas no site</p>
             {platforms.map((p) => (
-              <div key={p.id} className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border">
+              <div key={p.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-lg bg-card border border-border">
                 <div className="min-w-0 flex-1">
                   <p className="font-bold truncate">{p.name}</p>
                   <p className="text-xs text-muted-foreground truncate">
                     {CATEGORIES.find((c) => c.id === p.category)?.label} · {p.link}
                   </p>
                 </div>
-                <Button variant="ghost" size="icon" onClick={() => remove(p.id)} aria-label="Excluir">
-                  <Trash2 className="w-4 h-4 text-destructive" />
-                </Button>
+                <div className="flex items-center gap-2 self-end sm:self-auto">
+                  <select
+                    value={p.category}
+                    onChange={(event) => void updatePlatformCategory(p.id, event.target.value as CategoryId)}
+                    disabled={updatingPlatformId === p.id}
+                    aria-label={`Categoria de ${p.name}`}
+                    className="h-10 max-w-40 rounded-md border border-input bg-background px-3 text-xs text-foreground disabled:opacity-60"
+                  >
+                    {CATEGORIES.map((c) => (
+                      <option key={c.id} value={c.id}>{c.label}</option>
+                    ))}
+                  </select>
+                  <Button variant="ghost" size="icon" onClick={() => remove(p.id)} aria-label={`Excluir ${p.name}`}>
+                    <Trash2 className="w-4 h-4 text-destructive" />
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
