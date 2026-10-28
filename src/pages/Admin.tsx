@@ -207,7 +207,7 @@ const Admin = () => {
                     category === c.id ? "bg-gold text-primary-foreground border-gold" : "border-border text-muted-foreground"
                   )}
                 >
-                  {c.emoji} {c.label}
+                  {c.label}
                 </button>
               ))}
             </div>
