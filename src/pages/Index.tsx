@@ -42,7 +42,6 @@ const Index = () => {
                     : "text-muted-foreground active:bg-muted"
                 )}
               >
-                <span className="mr-1">{c.emoji}</span>
                 {c.label}
               </button>
             ))}
