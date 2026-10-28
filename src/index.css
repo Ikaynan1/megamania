@@ -338,3 +338,142 @@ h1, h2, h3, h4, h5, h6 {
   color: hsl(218 12% 76%);
   border-color: hsl(220 16% 22%);
 }
+
+
+/* Category identities: subtle motion and distinct color cues */
+.category-card {
+  transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+}
+
+.category-card:hover {
+  transform: translateY(-2px);
+}
+
+.category-card::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  opacity: 0.8;
+}
+
+.category-card--lancamentos::after {
+  background: linear-gradient(90deg, transparent, #f08a3c, #ffd66b, transparent);
+}
+
+.category-card--populares::after {
+  background: linear-gradient(90deg, transparent, #7467f0, #62c9ff, transparent);
+}
+
+.category-card--melhores::after {
+  background: linear-gradient(90deg, transparent, #bc9140, #f5df9a, transparent);
+}
+
+.category-mark {
+  isolation: isolate;
+}
+
+.category-mark-initials {
+  position: relative;
+  z-index: 1;
+  font-size: 1rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.category-mark-icon {
+  z-index: 2;
+  filter: drop-shadow(0 1px 4px currentColor);
+}
+
+.category-mark-glint {
+  position: absolute;
+  z-index: 1;
+  inset: -35%;
+  background: linear-gradient(110deg, transparent 38%, rgb(255 255 255 / 0.3) 50%, transparent 62%);
+  transform: translateX(-100%);
+  animation: mark-glint 3.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.category-mark--lancamentos {
+  color: #ffd28b;
+  border-color: rgb(240 138 60 / 0.5);
+  background: radial-gradient(circle at 50% 100%, #7d321c, #311a1a 70%);
+  box-shadow: inset 0 -8px 16px rgb(245 111 42 / 0.2);
+}
+
+.category-mark--populares {
+  color: #b8c2ff;
+  border-color: rgb(116 103 240 / 0.5);
+  background: radial-gradient(circle at 70% 25%, #3b3877, #1a2032 72%);
+}
+
+.category-mark--melhores {
+  color: #f4dfa5;
+  border-color: rgb(188 145 64 / 0.55);
+  background: radial-gradient(circle at 50% 20%, #55462a, #25221c 72%);
+}
+
+.category-title--lancamentos {
+  text-shadow: 0 0 12px rgb(240 116 50 / 0.28);
+  animation: launch-flicker 1.8s ease-in-out infinite alternate;
+}
+
+.category-title--populares {
+  text-shadow: 0 0 12px rgb(116 103 240 / 0.28);
+}
+
+.category-title--melhores {
+  text-shadow: 0 0 12px rgb(188 145 64 / 0.24);
+}
+
+.category-label--lancamentos {
+  color: #f0a06a;
+}
+
+.category-label--populares {
+  color: #a9a0ff;
+}
+
+.category-label--melhores {
+  color: #e0c580;
+}
+
+.category-mark--lancamentos .category-mark-icon {
+  animation: flame-dance 850ms ease-in-out infinite alternate;
+}
+
+.category-mark--populares .category-mark-icon {
+  animation: energy-pulse 1.5s ease-in-out infinite;
+}
+
+.category-mark--melhores .category-mark-icon {
+  animation: trophy-lift 2.4s ease-in-out infinite;
+}
+
+@keyframes mark-glint {
+  0%, 62% { transform: translateX(-100%); }
+  84%, 100% { transform: translateX(100%); }
+}
+
+@keyframes flame-dance {
+  from { transform: translateY(1px) rotate(-7deg) scale(0.94); }
+  to { transform: translateY(-2px) rotate(7deg) scale(1.08); }
+}
+
+@keyframes energy-pulse {
+  0%, 100% { transform: scale(0.94); filter: drop-shadow(0 0 2px currentColor); }
+  50% { transform: scale(1.12); filter: drop-shadow(0 0 7px currentColor); }
+}
+
+@keyframes trophy-lift {
+  0%, 100% { transform: translateY(1px); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes launch-flicker {
+  from { text-shadow: 0 0 8px rgb(240 116 50 / 0.22); }
+  to { text-shadow: 0 0 15px rgb(240 116 50 / 0.5), 0 0 24px rgb(255 190 85 / 0.2); }
+}
